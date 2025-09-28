@@ -9,13 +9,15 @@ logger = logging.getLogger()
 
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 K = 3
+INDEX_PATH="faq_index.faiss"
+METADATA_PATH="metadata.pkl"
 
-def get_retriver(query, index_path="faq_index.faiss", metadata_path="metadata.pkl"):
+def get_retriver(query, chunks=None):
     try:
         model = SentenceTransformer(EMBEDDING_MODEL)
-        index = faiss.read_index(index_path)
+        index = faiss.read_index(INDEX_PATH)
         
-        with open(metadata_path, "rb") as f:
+        with open(METADATA_PATH, "rb") as f:
             metadata = pickle.load(f)
             
         query_embedding = model.encode([query]).astype("float32")
@@ -31,5 +33,4 @@ def get_retriver(query, index_path="faq_index.faiss", metadata_path="metadata.pk
         return results
         
     except Exception as e:
-        logger.error(f"Error setting up retriever: {str(e)}")
-        
+        logger.error(f"Error setting up retriever: {str(e)}")    
