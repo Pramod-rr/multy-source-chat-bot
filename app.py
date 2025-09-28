@@ -9,13 +9,13 @@ def chat(query):
     chunks = get_retriver(query)
     answer = generate_response(query, chunks)
     
-    # Format output with sources
+  
     sources = "\n".join([f"- {c['source']} (score: {c['score']:.2f})" for c in chunks])
     full_response = f"{answer}\n\n**Sources:**\n{sources}"
     
     return full_response
 
-# Launch UI
+
 iface = gr.Interface(
     fn=chat,
     inputs=gr.Textbox(label="Ask your FAQ", placeholder="e.g., What is the refund policy?"),
