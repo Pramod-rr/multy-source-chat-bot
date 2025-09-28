@@ -1,14 +1,13 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 
-MODEL_NAME = "microsoft/phi-2"  # Small LLM (~2.7B params)
+MODEL_NAME = "microsoft/phi-2"  
 
-# Load model (downloads on first run)
+
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, torch_dtype=torch.float16, device_map="auto")
 
 def generate_response(query, context_chunks):
-    # Combine chunks into context
     context = "\n".join([chunk["content"] for chunk in context_chunks])
     
     prompt = f"""You are a helpful FAQ bot. Answer the question based only on the provided context. Keep it concise, like a FAQ entry.
