@@ -13,6 +13,8 @@ logger = logging.getLogger(__name__)
 
 SOURCE_DIR = r"C:\Users\rnmpr\Documents\Introduction to Machine Learning with Python ( PDFDrive ).pdf"
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+WEB_URL = "https://www.ibm.com/think/topics/machine-learning"
+SOURCE_DIR_TXT = r"C:\Users\rnmpr\Documents\machine learning.txt"
 
 def load_source():
     try:
@@ -25,16 +27,16 @@ def load_source():
            text += page.extract_text()
        documents.append({"source": os.path.basename(pdf_file), "content": text})
     
-    #    for txt_file in [f for f in os.listdir(SOURCE_DIR) if f.endswith('.txt')]:
-    #        with open(os.path.join(SOURCE_DIR, txt_file), 'r') as f:
-    #            content = f.read()
-    #        documents.append({"source": txt_file, "content":content})
+       with open(SOURCE_DIR_TXT, 'r') as f:
+            content = f.read()
+            
+            txt_file = os.path.basename(SOURCE_DIR_TXT)
+            documents.append({"source": txt_file, "content":content})
        
-    #    web_url = ""
-    #    response = requests.get("")
-    #    soup = BeautifulSoup(response.content, 'html.parser')
-    #    web_text = soup.get_text()
-    #    documents.append({"source": web_url, "content": web_text})  
+       response = requests.get(WEB_URL)
+       soup = BeautifulSoup(response.content, 'html.parser')
+       web_text = soup.get_text()
+       documents.append({"source": WEB_URL, "content": web_text})  
        logger.info(f"Loaded {len(documents)} documents from {SOURCE_DIR}")
        return documents
    
